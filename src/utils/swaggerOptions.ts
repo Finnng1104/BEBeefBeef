@@ -1,5 +1,3 @@
-import { SwaggerDefinition } from 'swagger-jsdoc';
-
 // Định nghĩa các type cho Swagger Options
 export interface SwaggerOptions {
   path?: string;
@@ -74,8 +72,8 @@ export function getSwaggerRoutes(): RouteMetadata[] {
 // Hàm để tạo Swagger specification từ metadata
 export function generateSwaggerSpec(
   routes: RouteMetadata[],
-  swaggerConfig: Partial<SwaggerDefinition>,
-): SwaggerDefinition {
+  swaggerConfig: Record<string, any>,
+): Record<string, any> {
   const paths: { [key: string]: any } = {};
 
   routes.forEach((route) => {
