@@ -1,6 +1,5 @@
 import { Address } from '../models/AddressModel';
 import { Dish } from '../models/DishModel';
-import Cart from '../models/CartModel';
 import { Request } from 'express';
 
 class OrderValidator {

@@ -290,7 +290,7 @@ class OrderService {
         break;
 
       case 'CREDIT_CARD':
-        const orderWithItems = await this.getOrderById(order._id); // chứa order_items
+        const orderWithItems = await this.getOrderById(order._id);
         redirectUrl = await createPayPalOrder(orderWithItems as any, paymentTransactionId);
         break;
 
