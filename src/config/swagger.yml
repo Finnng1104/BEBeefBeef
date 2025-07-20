@@ -1,0 +1,1103 @@
+# openapi: 3.0.0
+# info:
+#   title: Restaurant API
+#   version: 1.0.0
+#   description: API for managing restaurant
+
+servers:
+  - url: http://localhost:4000
+    description: Local server
+components:
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearer: []
+paths:
+  /api/auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Login
+      description: Login to the application
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: 'user123'
+                password:
+                  type: string
+                  example: 'password123'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Login successful'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Invalid username or password'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Unauthorized access'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Internal server error'
+  /api/auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Register a new user
+      description: Endpoint for user registration with validation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - email
+                - password
+                - confirmPassword
+                - phone
+              properties:
+                username:
+                  type: string
+                  example: 'john_doe'
+                email:
+                  type: string
+                  format: email
+                  example: 'john@example.com'
+                password:
+                  type: string
+                  format: password
+                  example: 'Password123'
+                confirmPassword:
+                  type: string
+                  format: password
+                  example: 'Password123'
+                phone:
+                  type: string
+                  example: '0912345678'
+                roles:
+                  type: array
+                  items:
+                    type: string
+                  example: ['6630e3677ff61b69377ee0ec']
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'User created successfully'
+                  user:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: '6630e50c81dcf4195438f58b'
+                      username:
+                        type: string
+                        example: 'john_doe'
+                      email:
+                        type: string
+                        example: 'john@example.com'
+                      phone:
+                        type: string
+                        example: '0912345678'
+                      roles:
+                        type: array
+                        items:
+                          type: string
+        '400':
+          description: Bad request (e.g., invalid input or email/username already exists)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Invalid email format'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Error during user registration'
+  /api/auth/google-login:
+    post:
+      tags:
+        - Auth
+      summary: Login with Google
+      description: Verify Google token and log in or register the user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: Google ID token retrieved from frontend (Google sign-in)
+                  example: "eyJhbGciOiJSUzI1NiIsImtpZCI6IjU4Y..."
+      responses:
+        '200':
+          description: Google login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Google login successful"
+                  user:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "661cc0f5e9a2bb0d4f69b123"
+                      username:
+                        type: string
+                        example: "John Doe"
+                      email:
+                        type: string
+                        example: "john.doe@gmail.com"
+                      avatar:
+                        type: string
+                        example: "https://lh3.googleusercontent.com/a/..."
+                  accessToken:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        '400':
+          description: Invalid Google token or error during login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error during Google login"
+                  error:
+                    type: string
+                    example: "Access Denied - Invalid Google token"
+        '401':
+          description: Unauthorized - Missing or invalid token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Access Denied - No token provided"
+  /api/auth/forgot-password:
+    post:
+      tags:
+        - Auth
+      summary: Send OTP for password reset
+      description: Send a one-time password (OTP) to the user's phone number for resetting password.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - phone
+              properties:
+                phone:
+                  type: string
+                  description: Phone number to receive OTP (must be in correct format)
+                  example: "+84901234567"
+      responses:
+        '200':
+          description: OTP sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "OTP sent successfully"
+        '400':
+          description: Bad request (e.g., phone number missing or invalid)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Phone number is required"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Failed to send OTP"
+    
+      tags:
+        - Auth
+      summary: Reset password
+      description: Reset user password via phone number after verifying OTP
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - phone
+                - newPassword
+                - confirmPassword
+              properties:
+                phone:
+                  type: string
+                  example: '0912345678'
+                newPassword:
+                  type: string
+                  format: password
+                  example: 'NewPassword123'
+                confirmPassword:
+                  type: string
+                  format: password
+                  example: 'NewPassword123'
+      responses:
+        '200':
+          description: Password reset successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Password reset successfully'
+        '400':
+          description: Bad request (e.g., missing fields, passwords do not match, invalid phone)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Passwords do not match'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Internal server error'
+  /api/auth/reset-password:
+    post:
+      tags:
+        - Auth
+      summary: Reset password
+      description: Reset user password via phone number after verifying OTP
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - phone
+                - newPassword
+                - confirmPassword
+              properties:
+                phone:
+                  type: string
+                  example: '0912345678'
+                newPassword:
+                  type: string
+                  format: password
+                  example: 'NewPassword123'
+                confirmPassword:
+                  type: string
+                  format: password
+                  example: 'NewPassword123'
+      responses:
+        '200':
+          description: Password reset successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Password reset successfully'
+        '400':
+          description: Bad request (e.g., missing fields, passwords do not match, invalid phone)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Passwords do not match'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Internal server error'
+  # Staff Controller
+  /api/staff/getAllStaff:
+    get:
+      tags:
+        - Staff
+      summary: Get all staff
+      description: Fetches a list of all staff with pagination support
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+            default: 1
+          description: Page number for pagination (defaults to 1)
+        - in: query
+          name: pageSize
+          required: false
+          schema:
+            type: integer
+            default: 10
+          description: Number of staff records per page (defaults to 10)
+      responses:
+        '200':
+          description: A list of staff
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    name:
+                      type: string
+                      example: 'John Doe'
+                    role:
+                      type: string
+                      example: 'Manager'
+                    email:
+                      type: string
+                      example: 'johndoe@example.com'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Error fetching staff'
+
+#   /api/staff/createStaff:
+#     post:
+#       tags:
+#         - Staff
+#       summary: Create a new staff member
+#       description: Creates a new staff member in the system
+#       requestBody:
+#         required: true
+#         content:
+#           application/json:
+#             schema:
+#               type: object
+#               properties:
+#                 name:
+#                   type: string
+#                   description: The name of the staff member
+#                   example: 'Jane Doe'
+#                 role:
+#                   type: string
+#                   description: The role of the staff member
+#                   example: 'Developer'
+#                 email:
+#                   type: string
+#                   description: The email of the staff member
+#                   example: 'janedoe@example.com'
+#       responses:
+#         '201':
+#           description: Staff member created successfully
+#           content:
+#             application/json:
+#               schema:
+#                 type: object
+#                 properties:
+#                   id:
+#                     type: integer
+#                     example: 1
+#                   name:
+#                     type: string
+#                     example: 'Jane Doe'
+#                   role:
+#                     type: string
+#                     example: 'Developer'
+#                   email:
+#                     type: string
+#                     example: 'janedoe@example.com'
+#         '500':
+#           description: Internal server error
+#           content:
+#             application/json:
+#               schema:
+#                 type: object
+#                 properties:
+#                   message:
+#                     type: string
+#                     example: 'Error creating staff'
+  
+#   /api/staff/updateStaff/{staffId}:
+#     put:
+#       tags:
+#         - Staff
+#       summary: Update an existing staff member
+#       description: Updates the information of an existing staff member in the system
+#       parameters:
+#         - name: staffId
+#           in: path
+#           required: true
+#           description: The ID of the staff member to update
+#           schema:
+#             type: integer
+#             example: 1
+#       requestBody:
+#         required: true
+#         content:
+#           application/json:
+#             schema:
+#               type: object
+#               properties:
+#                 name:
+#                   type: string
+#                   description: The updated name of the staff member
+#                   example: 'John Doe'
+#                 role:
+#                   type: string
+#                   description: The updated role of the staff member
+#                   example: 'Manager'
+#                 email:
+#                   type: string
+#                   description: The updated email of the staff member
+#                   example: 'johndoe@example.com'
+#       responses:
+#         '200':
+#           description: Staff member updated successfully
+#           content:
+#             application/json:
+#               schema:
+#                 type: object
+#                 properties:
+#                   status:
+#                     type: string
+#                     example: 'SUCCESS'
+#                   message:
+#                     type: string
+#                     example: 'Staff updated successfully'
+#                   data:
+#                     type: object
+#                     properties:
+#                       staffId:
+#                         type: integer
+#                         example: 1
+#                       name:
+#                         type: string
+#                         example: 'John Doe'
+#                       role:
+#                         type: string
+#                         example: 'Manager'
+#                       email:
+#                         type: string
+#                         example: 'johndoe@example.com'
+#         '400':
+#           description: Bad request (e.g., invalid data or staff not found)
+#           content:
+#             application/json:
+#               schema:
+#                 type: object
+#                 properties:
+#                   status:
+#                     type: string
+#                     example: 'ERROR'
+#                   message:
+#                     type: string
+#                     example: 'Staff not found or invalid data'
+#         '500':
+#           description: Internal server error
+#           content:
+#             application/json:
+#               schema:
+#                 type: object
+#                 properties:
+#                   status:
+#                     type: string
+#                     example: 'ERROR'
+#                   message:
+#                     type: string
+#                     example: 'Server error: [error message]'
+  
+#   /api/staff/deleteStaff/{staffId}:
+#     delete:
+#       tags:
+#         - Staff
+#       summary: Delete a staff member
+#       description: Deletes an existing staff member from the system by their ID
+#       parameters:
+#         - name: staffId
+#           in: path
+#           required: true
+#           description: The ID of the staff member to delete
+#           schema:
+#             type: integer
+#             example: 1
+#       responses:
+#         '200':
+#           description: Staff member deleted successfully
+#           content:
+#             application/json:
+#               schema:
+#                 type: object
+#                 properties:
+#                   status:
+#                     type: string
+#                     example: 'SUCCESS'
+#                   message:
+#                     type: string
+#                     example: 'Staff deleted successfully'
+#         '400':
+#           description: Bad request (e.g., staff not found)
+#           content:
+#             application/json:
+#               schema:
+#                 type: object
+#                 properties:
+#                   status:
+#                     type: string
+#                     example: 'ERROR'
+#                   message:
+#                     type: string
+#                     example: 'Staff not found or cannot be deleted'
+#         '500':
+#           description: Internal server error
+#           content:
+#             application/json:
+#               schema:
+#                 type: object
+#                 properties:
+#                   status:
+#                     type: string
+#                     example: 'ERROR'
+#                   message:
+#                     type: string
+#                     example: 'Server error: [error message]'
+  
+#   /api/staff/filterStaff:
+#     get:
+#       tags:
+#         - Staff
+#       summary: Filter staff based on various criteria
+#       description: Filters the staff members based on parameters like name, email, gender, status, date range, etc.
+#       parameters:
+#         - name: nameSort
+#           in: query
+#           description: Sort staff by name in ascending or descending order
+#           schema:
+#             type: string
+#             enum: ['A->Z', 'Z->A']
+#             example: 'A->Z'
+#         - name: emailSort
+#           in: query
+#           description: Sort staff by email in ascending or descending order
+#           schema:
+#             type: string
+#             enum: ['A->Z', 'Z->A']
+#             example: 'A->Z'
+#         - name: gender
+#           in: query
+#           description: Filter staff by gender
+#           schema:
+#             type: string
+#             enum: ['male', 'female', 'other']
+#             example: 'male'
+#         - name: status
+#           in: query
+#           description: Filter staff by status (active, inactive, or blocked)
+#           schema:
+#             type: string
+#             enum: ['active', 'inactive', 'blocked']
+#             example: 'active'
+#         - name: startDate
+#           in: query
+#           description: Filter staff who joined after this date
+#           schema:
+#             type: string
+#             format: date
+#             example: '2023-01-01'
+#         - name: endDate
+#           in: query
+#           description: Filter staff who joined before this date
+#           schema:
+#             type: string
+#             format: date
+#             example: '2023-12-31'
+#         - name: page
+#           in: query
+#           description: The page number for pagination
+#           schema:
+#             type: integer
+#             default: 1
+#             example: 1
+#         - name: pageSize
+#           in: query
+#           description: The number of staff members per page
+#           schema:
+#             type: integer
+#             default: 10
+#             example: 10
+#       responses:
+#         '200':
+#           description: A list of filtered staff members
+#           content:
+#             application/json:
+#               schema:
+#                 type: object
+#                 properties:
+#                   staff:
+#                     type: array
+#                     items:
+#                       type: object
+#                       properties:
+#                         staffId:
+#                           type: integer
+#                           example: 1
+#                         name:
+#                           type: string
+#                           example: 'John Doe'
+#                         email:
+#                           type: string
+#                           example: 'john.doe@example.com'
+#                         gender:
+#                           type: string
+#                           example: 'male'
+#                         status:
+#                           type: string
+#                           example: 'active'
+#         '400':
+#           description: Invalid query parameters
+#           content:
+#             application/json:
+#               schema:
+#                 type: object
+#                 properties:
+#                   status:
+#                     type: string
+#                     example: 'ERROR'
+#                   message:
+#                     type: string
+#                     example: 'Invalid filter parameters'
+#         '500':
+#           description: Internal server error
+#           content:
+#             application/json:
+#               schema:
+#                 type: object
+#                 properties:
+#                   status:
+#                     type: string
+#                     example: 'ERROR'
+#                   message:
+#                     type: string
+#                     example: 'Server error: [error message]'
+  
+  # User Controller
+  /api/user/getAllUser:
+    get:
+      tags:
+        - User
+      summary: Get all users
+      description: Fetch a list of all users from the system
+      responses:
+        '200':
+          description: Successfully retrieved the list of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    userId:
+                      type: integer
+                      example: 1
+                    username:
+                      type: string
+                      example: 'john_doe'
+                    email:
+                      type: string
+                      example: 'john.doe@example.com'
+                    status:
+                      type: string
+                      example: 'active'
+                    createdAt:
+                      type: string
+                      format: date-time
+                      example: '2025-02-07T12:00:00Z'
+        '500':
+          description: Error fetching users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'ERROR'
+                  message:
+                    type: string
+                    example: 'Failed to fetch all users'
+                  error:
+                    type: string
+                    example: 'Internal Server Error'
+  
+#   /api/user/getAllUserByUserRole:
+#     get:
+#       tags:
+#         - User
+#       summary: Get all users by role
+#       description: Fetch a list of users filtered by their role
+#       responses:
+#         '200':
+#           description: Successfully retrieved the list of users by role
+#           content:
+#             application/json:
+#               schema:
+#                 type: array
+#                 items:
+#                   type: object
+#                   properties:
+#                     userId:
+#                       type: integer
+#                       example: 1
+#                     username:
+#                       type: string
+#                       example: 'john_doe'
+#                     email:
+#                       type: string
+#                       example: 'john.doe@example.com'
+#                     role:
+#                       type: string
+#                       example: 'user'
+#                     status:
+#                       type: string
+#                       example: 'active'
+#                     createdAt:
+#                       type: string
+#                       format: date-time
+#                       example: '2025-02-07T12:00:00Z'
+#         '500':
+#           description: Error fetching users by role
+#           content:
+#             application/json:
+#               schema:
+#                 type: object
+#                 properties:
+#                   status:
+#                     type: string
+#                     example: 'ERROR'
+#                   message:
+#                     type: string
+#                     example: 'Failed to fetch users with role user'
+#                   error:
+#                     type: string
+#                     example: 'Internal Server Error'
+  
+#   /api/user/getUserById/{userId}:
+#     get:
+#       tags:
+#         - User
+#       summary: Get user by ID
+#       description: Fetch a specific user by their unique ID
+#       parameters:
+#         - name: userId
+#           in: path
+#           description: ID of the user to retrieve
+#           required: true
+#           schema:
+#             type: integer
+#             example: 1
+#       responses:
+#         '200':
+#           description: Successfully retrieved the user by ID
+#           content:
+#             application/json:
+#               schema:
+#                 type: object
+#                 properties:
+#                   userId:
+#                     type: integer
+#                     example: 1
+#                   username:
+#                     type: string
+#                     example: 'john_doe'
+#                   email:
+#                     type: string
+#                     example: 'john.doe@example.com'
+#                   role:
+#                     type: string
+#                     example: 'user'
+#                   status:
+#                     type: string
+#                     example: 'active'
+#                   createdAt:
+#                     type: string
+#                     format: date-time
+#                     example: '2025-02-07T12:00:00Z'
+#         '500':
+#           description: Error fetching user by ID
+#           content:
+#             application/json:
+#               schema:
+#                 type: object
+#                 properties:
+#                   status:
+#                     type: string
+#                     example: 'ERROR'
+#                   message:
+#                     type: string
+#                     example: 'Failed to fetch user by id'
+#                   error:
+#                     type: string
+#                     example: 'Internal Server Error'
+
+#   /api/user/blockUser/{userId}:
+#     post:
+#       tags:
+#         - User
+#       summary: Block a user
+#       description: Block a user by their unique ID to prevent access to the application
+#       parameters:
+#         - name: userId
+#           in: path
+#           description: ID of the user to block
+#           required: true
+#           schema:
+#             type: integer
+#             example: 1
+#       responses:
+#         '200':
+#           description: Successfully blocked the user
+#           content:
+#             application/json:
+#               schema:
+#                 type: object
+#                 properties:
+#                   status:
+#                     type: string
+#                     example: 'SUCCESS'
+#                   message:
+#                     type: string
+#                     example: 'User successfully blocked'
+#         '500':
+#           description: Error blocking the user
+#           content:
+#             application/json:
+#               schema:
+#                 type: object
+#                 properties:
+#                   status:
+#                     type: string
+#                     example: 'ERROR'
+#                   message:
+#                     type: string
+#                     example: 'Failed to block user'
+#                   error:
+#                     type: string
+#                     example: 'Internal Server Error'
+
+#   /api/user/filterUser:
+#     get:
+#       tags:
+#         - User
+#       summary: Filter users based on various criteria
+#       description: Filters users by name, email, gender, status, date range, and pagination parameters.
+#       parameters:
+#         - name: nameSort
+#           in: query
+#           description: Sort users by name in either 'A->Z' or 'Z->A' order
+#           required: false
+#           schema:
+#             type: string
+#             enum: ['A->Z', 'Z->A']
+#             example: 'A->Z'
+#         - name: emailSort
+#           in: query
+#           description: Sort users by email in either 'A->Z' or 'Z->A' order
+#           required: false
+#           schema:
+#             type: string
+#             enum: ['A->Z', 'Z->A']
+#             example: 'A->Z'
+#         - name: gender
+#           in: query
+#           description: Filter by gender (male, female, or other)
+#           required: false
+#           schema:
+#             type: string
+#             enum: ['male', 'female', 'other']
+#             example: 'male'
+#         - name: status
+#           in: query
+#           description: Filter users by status (active, inactive, or blocked)
+#           required: false
+#           schema:
+#             type: string
+#             enum: ['active', 'inactive', 'blocked']
+#             example: 'active'
+#         - name: startDate
+#           in: query
+#           description: Start date for filtering users (format: YYYY-MM-DD)
+#           required: false
+#           schema:
+#             type: string
+#             example: '2023-01-01'
+#         - name: endDate
+#           in: query
+#           description: End date for filtering users (format: YYYY-MM-DD)
+#           required: false
+#           schema:
+#             type: string
+#             example: '2023-12-31'
+#         - name: page
+#           in: query
+#           description: The page number for pagination
+#           required: false
+#           schema:
+#             type: integer
+#             default: 1
+#             example: 1
+#         - name: pageSize
+#           in: query
+#           description: The number of users per page
+#           required: false
+#           schema:
+#             type: integer
+#             default: 10
+#             example: 10
+#       responses:
+#         '200':
+#           description: Successfully filtered users
+#           content:
+#             application/json:
+#               schema:
+#                 type: object
+#                 properties:
+#                   status:
+#                     type: string
+#                     example: 'SUCCESS'
+#                   message:
+#                     type: string
+#                     example: 'Filtered users successfully'
+#                   data:
+#                     type: array
+#                     items:
+#                       type: object
+#                       properties:
+#                         userId:
+#                           type: integer
+#                           example: 1
+#                         userName:
+#                           type: string
+#                           example: 'john_doe'
+#                         email:
+#                           type: string
+#                           example: 'john.doe@example.com'
+#                         gender:
+#                           type: string
+#                           example: 'male'
+#                         status:
+#                           type: string
+#                           example: 'active'
+#         '500':
+#           description: Error filtering users
+#           content:
+#             application/json:
+#               schema:
+#                 type: object
+#                 properties:
+#                   status:
+#                     type: string
+#                     example: 'ERROR'
+#                   message:
+#                     type: string
+#                     example: 'Failed to filter users'
+
+
+

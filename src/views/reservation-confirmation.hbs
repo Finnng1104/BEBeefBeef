@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Xác nhận đặt bàn</title>
+</head>
+
+<body style="background-color: #012B40; color: white; font-family: sans-serif; margin: 0; padding: 0;">
+  <div style="max-width: 600px; margin: 20px auto;">
+
+    <div style="display: flex; justify-content: space-between; align-items: center; background-color: #021D2A; padding: 24px; padding-bottom: 0px; border-top-left-radius: 16px; border-top-right-radius: 16px;">
+      <table style="width: 100%;">
+        <tr>
+          <td style="text-align: left;">
+            <img src="https://res.cloudinary.com/dw8c7oz6q/image/upload/v1748798728/logo_tmawjo.png" alt="Logo"
+              style="height: 80px;" />
+          </td>
+          <td style="text-align: right; font-size: 14px; color: #D1D5DB;">
+            BeefBeef Restaurant
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="background-color: white; color: black; border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+
+      <div style="background-color: #021D2A; color: white; padding: 24px;">
+        <h1 style="font-size: 20px; font-weight: 600; margin: 0 0 8px;">Cảm ơn bạn đã đặt bàn tại BeefBeef Restaurant!</h1>
+        <p style="font-size: 14px; margin: 0 0 16px;">Yêu cầu của bạn đang được xử lý. Bạn sẽ nhận được email cập nhật khi đơn hàng được giao.</p>
+        <p style="font-size: 14px; margin: 0 0 8px;">Mã đặt bàn: <strong>#{{orderId}}</strong></p>
+      </div>
+
+      <div style="padding: 24px;">
+        <div style="margin-bottom: 24px;">
+          <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">Thông tin khách hàng</h2>
+          <span><strong>Họ và tên:</strong> {{name}}</span> <br>
+          <span><strong>Số điện thoại:</strong> {{phone}}</span> <br>
+          <span><strong>Email:</strong> {{email}}</span> <br>
+        </div>
+
+        <div style="margin-bottom: 24px;">
+          <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">Chi tiết đặt bàn</h2>
+          <span><strong>Ngày đặt:</strong> {{date}}</span> <br>
+          <span><strong>Giờ đặt:</strong> {{time}}</span> <br>
+          <span><strong>Loại bàn:</strong> {{seatingType}}</span> <br>
+          <span><strong>Số bàn:</strong> {{tableCount}} bàn</span> <br>
+          <span><strong>Số lượng người:</strong> {{number_of_people}}</span> <br>
+          <span><strong>Ghi chú:</strong> {{note}}</span>
+        </div>
+
+        {{#if items}}
+        <div style="margin-bottom: 24px;">
+          <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">Danh sách món ăn</h2>
+          <table style="width: 100%; font-size: 14px; border-collapse: collapse; border-top: 1px solid #E5E7EB; border-bottom: 1px solid #E5E7EB;">
+            <thead>
+              <tr style="text-align: left;">
+                <th style="padding: 8px 0;">Tên món</th>
+                <th style="padding: 8px 0; text-align: center;">Số lượng</th>
+                <th style="padding: 8px 0; text-align: right;">Giá</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each items}}
+              <tr style="border-top: 1px solid #F3F4F6;">
+                <td style="padding: 6px 0;">{{name}}</td>
+                <td style="padding: 6px 0; text-align: center;">{{quantity}}</td>
+                <td style="padding: 6px 0; text-align: right;">{{price}}</td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+        {{/if}}
+
+        <div style="margin-bottom: 24px;">
+          <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">Địa chỉ nhà hàng</h2>
+          <div style="background-color: #F3F4F6; padding: 12px; border-radius: 8px;">
+            Nhà Hàng BeefBeef<br>
+            161 đường Quốc Hương, Thảo Điền, Quận 2,<br>
+            TP. Hồ Chí Minh
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 24px; padding-top: 24px;">
+          <a href="{{reservationDetailUrl}}"
+            style="display: inline-block; background-color: #FFDEA0; color: #021D2A; font-weight: 600; padding: 8px 16px; border-radius: 8px; text-decoration: none;">Xem
+            chi tiết đặt bàn</a>
+        </div>
+      </div>
+
+      <div style="background-color: #F3F4F6; font-size: 14px; color: #4B5563; text-align: center; padding: 16px;">
+        Nếu bạn có câu hỏi, vui lòng liên hệ chúng tôi qua hotline hoặc email.<br />
+        BeefBeef, 161 Quốc Hương, Thảo Điền, Quận 2 | 0239991255 | beefbeef@gmail.com
+      </div>
+    </div>
+
+    <div style="text-align: center; font-size: 14px; color: #9CA3AF; padding: 24px;">
+      <p style="margin: 0;">&copy; 2024 BeefBeef. All rights reserved.</p>
+      <p style="margin-top: 8px;">
+        <a href="#" style="color: #D1D5DB; text-decoration: none;">Chính sách bảo mật</a> ·
+        <a href="#" style="color: #D1D5DB; text-decoration: none;">Liên hệ</a>
+      </p>
+    </div>
+  </div>
+</body>
+</html> 

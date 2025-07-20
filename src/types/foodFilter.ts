@@ -1,0 +1,20 @@
+export type FoodFilter = {
+  page?: number;
+  limit?: number;
+  sort?: string;
+  search?: string;
+  category?: string;
+  priceMin?: number;
+  priceMax?: number;
+  discountMin?: number;
+  discountMax?: number;
+  stockMin?: number;
+  stockMax?: number;
+  viewsMin?: number;
+  viewsMax?: number;
+  orderedMin?: number;
+  orderedMax?: number;
+  ratingMin?: number;
+  ratingMax?: number;
+  status?: string;
+};

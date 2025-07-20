@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Xác Nhận Đơn Hàng</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-[#012B40] text-white">
+  <!-- Header chung -->
+  <div class="max-w-xl mx-auto mt-4">
+    <div class="flex justify-between items-center px-6 py-4 bg-[#021D2A] rounded-t-2xl">
+      <img src="https://via.placeholder.com/120x40?text=LOGO" alt="Logo" class="h-10">
+      <span class="text-sm text-gray-300">[Tên Nhà Hàng]</span>
+    </div>
+  </div>
+
+  <!-- Order Confirmation Email -->
+  <div class="max-w-xl mx-auto bg-white text-black rounded-b-2xl shadow-lg overflow-hidden">
+    <div class="bg-[#021D2A] text-white p-6">
+      <h1 class="text-2xl font-semibold">Cảm ơn bạn đã đặt hàng!</h1>
+      <p class="text-sm mt-1">Đơn hàng <strong>#123456</strong> đã được xác nhận.</p>
+    </div>
+    <div class="p-6">
+      <p class="mb-4">Xin chào <strong>Nguyễn Văn A</strong>,</p>
+      <p class="mb-4">Chúng tôi đã nhận được đơn hàng của bạn. Dưới đây là thông tin chi tiết:</p>
+      <h2 class="text-lg font-semibold mb-2">Chi tiết đơn hàng:</h2>
+      <ul class="mb-4">
+        <li class="flex justify-between py-1 border-b"><span>Phở bò đặc biệt</span><span>80.000₫</span></li>
+        <li class="flex justify-between py-1 border-b"><span>Bún chả</span><span>60.000₫</span></li>
+        <li class="flex justify-between py-1"><span>Trà đào</span><span>25.000₫</span></li>
+      </ul>
+      <div class="flex justify-between font-semibold text-lg border-t pt-4">
+        <span>Tổng cộng:</span>
+        <span>165.000₫</span>
+      </div>
+      <div class="mt-6">
+        <a href="#" class="inline-block bg-[#FFDEA0] text-[#021D2A] font-semibold px-4 py-2 rounded-lg shadow-md">Xem đơn hàng</a>
+      </div>
+    </div>
+    <div class="bg-gray-100 text-sm text-center text-gray-600 py-4">
+      Nếu bạn có câu hỏi, vui lòng liên hệ chúng tôi qua hotline hoặc email.<br>
+      [Địa chỉ nhà hàng] | [SĐT] | [Email]
+    </div>
+  </div>
+
+  <!-- Payment Confirmation Email -->
+  <div class="max-w-xl mx-auto bg-white text-black rounded-2xl shadow-lg overflow-hidden my-8">
+    <div class="bg-[#021D2A] text-white p-6">
+      <h1 class="text-2xl font-semibold">Thanh toán thành công!</h1>
+      <p class="text-sm mt-1">Cảm ơn bạn đã sử dụng dịch vụ tại <strong>[Tên Nhà Hàng]</strong>.</p>
+    </div>
+    <div class="p-6">
+      <p class="mb-4">Chúng tôi xác nhận rằng bạn đã thanh toán thành công cho đơn hàng #123456.</p>
+      <h2 class="text-lg font-semibold mb-2">Chi tiết thanh toán:</h2>
+      <ul class="mb-4">
+        <li class="flex justify-between py-1 border-b"><span>Mã giao dịch</span><span>#PAY123456</span></li>
+        <li class="flex justify-between py-1 border-b"><span>Phương thức</span><span>MoMo</span></li>
+        <li class="flex justify-between py-1"><span>Ngày</span><span>01/06/2025</span></li>
+      </ul>
+      <div class="flex justify-between font-semibold text-lg border-t pt-4">
+        <span>Đã thanh toán:</span>
+        <span>165.000₫</span>
+      </div>
+      <div class="mt-6">
+        <a href="#" class="inline-block bg-[#FFDEA0] text-[#021D2A] font-semibold px-4 py-2 rounded-lg shadow-md">Xem hóa đơn</a>
+      </div>
+    </div>
+    <div class="bg-gray-100 text-sm text-center text-gray-600 py-4">
+      Mọi thông tin chi tiết đã được gửi kèm trong hóa đơn PDF.<br>
+      Nếu cần hỗ trợ, vui lòng liên hệ bộ phận chăm sóc khách hàng.
+    </div>
+  </div>
+
+  <!-- Footer chung -->
+  <div class="max-w-xl mx-auto text-center text-sm text-gray-400 py-6">
+    <p>&copy; 2025 [Tên Nhà Hàng]. All rights reserved.</p>
+    <p class="mt-2">\      <a href="#" class="text-gray-300 hover:text-white">Chính sách bảo mật</a> · 
+      <a href="#" class="text-gray-300 hover:text-white">Liên hệ</a>
+    </p>
+  </div>
+</body>
+
+</html>

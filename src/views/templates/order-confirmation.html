@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Xác nhận đơn hàng</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#012B40] text-white">
+  <!-- Header -->
+  <div class="max-w-xl mx-auto mt-4">
+    <div class="flex justify-between items-center px-6 py-4 bg-[#021D2A] rounded-t-2xl">
+      <img src="https://res.cloudinary.com/dw8c7oz6q/image/upload/v1748798728/logo_tmawjo.png" alt="Logo" class="h-20" />
+      <span class="text-sm text-gray-300">BeefBeef Restaurant</span>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="max-w-xl mx-auto bg-white text-black rounded-b-2xl shadow-lg overflow-hidden">
+    <div class="bg-[#021D2A] text-white p-6">
+      <h1 class="text-2xl font-semibold">Cảm ơn bạn đã đặt hàng!</h1>
+      <p class="text-sm mt-1">Đơn hàng <strong>#123456</strong> đã được xác nhận.</p>
+    </div>
+
+    <div class="p-6 space-y-6">
+      <!-- Khách hàng -->
+      <section>
+        <h2 class="text-lg font-semibold mb-2">Thông tin khách hàng</h2>
+        <p><strong>Họ tên:</strong> Nguyễn Văn A</p>
+        <p><strong>SĐT:</strong> 0901234567</p>
+        <p><strong>Địa chỉ:</strong> 123 Lê Lợi, Q.1, TP.HCM</p>
+      </section>
+
+      <!-- Món ăn -->
+      <section>
+        <h2 class="text-lg font-semibold mb-2">Món ăn đã chọn</h2>
+        <table class="w-full text-sm border-t border-b border-gray-200">
+          <thead>
+            <tr class="text-left">
+              <th class="py-2">Món</th>
+              <th class="py-2 text-center">SL</th>
+              <th class="py-2 text-right">Đơn giá</th>
+              <th class="py-2 text-right">Thành tiền</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-t border-gray-100">
+              <td>Phở bò đặc biệt</td>
+              <td class="text-center">1</td>
+              <td class="text-right">80.000₫</td>
+              <td class="text-right">80.000₫</td>
+            </tr>
+            <tr>
+              <td>Bún chả</td>
+              <td class="text-center">1</td>
+              <td class="text-right">60.000₫</td>
+              <td class="text-right">60.000₫</td>
+            </tr>
+            <tr>
+              <td>Trà đào</td>
+              <td class="text-center">1</td>
+              <td class="text-right">25.000₫</td>
+              <td class="text-right">25.000₫</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Phương thức & Ghi chú -->
+      <section>
+        <h2 class="text-lg font-semibold mb-2">Chi tiết đơn hàng</h2>
+        <p><strong>Phương thức giao hàng:</strong> Giao tận nơi</p>
+        <p><strong>Phương thức thanh toán:</strong> MoMo</p>
+        <p><strong>Ghi chú:</strong> Giao trước 12h</p>
+        <p><strong>Thời gian nhận hàng:</strong> 11:30 - 12:00, 03/06/2025</p>
+      </section>
+
+      <!-- Tổng tiền -->
+      <section>
+        <div class="space-y-1 text-sm">
+          <div class="flex justify-between"><span>Tạm tính:</span><span>165.000₫</span></div>
+          <div class="flex justify-between"><span>VAT (8%):</span><span>13.200₫</span></div>
+          <div class="flex justify-between"><span>Phí giao hàng:</span><span>15.000₫</span></div>
+          <div class="flex justify-between text-lg font-semibold border-t pt-2 mt-2">
+            <span>Tổng cộng:</span><span class="text-[#021D2A] font-bold">193.200₫</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <div class="mt-6 pt-6 text-center">
+        <a href="#" class="inline-block bg-[#FFDEA0] text-[#021D2A] font-semibold px-4 py-2 rounded-lg shadow-md">Xem chi tiết đơn hàng</a>
+      </div>
+    </div>
+
+    <!-- Footer nội dung -->
+    <div class="bg-gray-100 text-sm text-center text-gray-600 py-4">
+      Nếu bạn có câu hỏi, vui lòng liên hệ chúng tôi qua hotline hoặc email.<br />
+      BeefBeef, 161 Quốc Hương, Thảo Điền, Quận 2 | 0239991255 | beefbeef@gmail.com
+    </div>
+  </div>
+
+  <!-- Footer chung -->
+  <div class="max-w-xl mx-auto text-center text-sm text-gray-400 py-6">
+    <p>&copy; 2025 BeefBeef. All rights reserved.</p>
+    <p class="mt-2">
+      <a href="#" class="text-gray-300 hover:text-white">Chính sách bảo mật</a> · 
+      <a href="#" class="text-gray-300 hover:text-white">Liên hệ</a>
+    </p>
+  </div>
+</body>
+</html>
